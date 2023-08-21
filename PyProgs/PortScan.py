@@ -2,26 +2,26 @@ import socket
 import threading
 import time
 
-# Выводим сообщение перед началом работы скрипта
+# Displaying a message before the script starts
 print('Port Scanner by STRMBRG & OpenAI')
-time.sleep(1)
+time.sleep(0.8)
 
-ip_address = input("Введите IP-адрес для сканирования портов: ")
-min_port = int(input("Введите начальный порт для сканирования: "))
-max_port = int(input("Введите конечный порт для сканирования: "))
-delay = float(input("Введите задержку (в секундах) между проверками портов: "))
+ip_address = input("Enter the IP address for port scanning: ")
+min_port = int(input("Enter start port to scan: "))
+max_port = int(input("Enter the destination port for scanning: "))
+delay = float(input("Enter the delay (in seconds) between port checks: "))
 
 open_ports = []
 
 def scan_port(port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(0.1) # Установка таймаута в 0.1 секунды
+    s.settimeout(0.1) # Setting the timeout to 0.1 seconds
     result = s.connect_ex((ip_address, port))
     if result == 0:
-        print(f"Порт {port} открыт")
+        print(f"Port {port} open")
         open_ports.append(port)
     else:
-        print(f"Порт {port} закрыт")
+        print(f"Port {port} closed")
     s.close()
 
 threads = []
@@ -35,5 +35,5 @@ for port in range(min_port, max_port+1):
 for t in threads:
     t.join()
 
-print("Открытые порты:")
+print("Open ports:")
 print(open_ports)
