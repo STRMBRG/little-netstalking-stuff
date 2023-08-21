@@ -3,29 +3,35 @@ import itertools
 import concurrent.futures
 import time
 
-# Выводим сообщение перед началом работы скрипта
+# Displaying a message before the script starts
 print('Deep IP Scanner by STRMBRG & OpenAI')
-time.sleep(1)
+time.sleep(0.8)
 
-# Функция для проверки рабочих IP-адресов и записи их в файл
-def scan(ip, ports):
+# Initialization of global variables to keep track of the number of scanned IP addresses and the total number of IP addresses.
+scanned_count = 0
+total_ips = 0
+
+# Function declaration named "scan". It takes two arguments: "ip" (IP address) and "port" (port).
+def scan(ip, port):
+    global scanned_count
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.settimeout(2)
-        for port in ports:
-            result = sock.connect_ex((ip, port))
-            if result == 0:
-                print(f'Working IP: {ip}:{port}')
-                with open('workingips.txt', 'a') as f:
-                    f.write(f'{ip}:{port}\n')
+        result = sock.connect_ex((ip, port))
+        if result == 0:
+            print(f'Found IP: {ip} | Port: {port}')
+            with open('workingips.txt', 'a') as f:
+                f.write(f'{ip}:{port}\n')
+        if port == ports_list[-1]:
+            scanned_count += 1
+            print(f'Progress: {scanned_count}/{total_ips} IPs scanned')
 
-# Получаем порты для сканирования от пользователя
-ports_string = input('Введите порты для сканирования через запятую (например 80,443): ')
-# Разбиваем строку с портами на список и преобразуем каждый элемент в число
-ports_list = [int(port.strip()) for port in ports_string.split(',')]
+# Obtaining ports to scan from the user
+ports_string = input('Enter ports to scan separated by commas (for example 80,443): ')
+# Split the string with ports into a list and convert each element into a number
+ports_list = [int(port.strip()) for port in ports_string.split(',') if port.strip().isdigit()]
 
-# Открываем файл с диапазонами IP-адресов и проходимся по каждому из них
+# Read IPs to scan from file
 with open('ipranges.txt', 'r') as f:
-    # Создаем список всех IP-адресов из заданных диапазонов
     ips_to_scan = []
     for line in f.readlines():
         start_ip, end_ip = line.strip().split('-')
@@ -34,14 +40,15 @@ with open('ipranges.txt', 'r') as f:
         ip_ranges   = [range(start_parts[i], end_parts[i]+1) for i in range(4)]
         for a, b, c, d in itertools.product(*ip_ranges):
             ips_to_scan.append(f'{a}.{b}.{c}.{d}')
+    total_ips = len(ips_to_scan)  # Set the total number of IPs to be scanned
 
-# Получаем количество потоков для сканирования от пользователя
-num_threads = int(input('Введите количество потоков: '))
+# Get the number of threads to use
+num_threads = int(input('Enter the number of threads: '))
 
-# Создаем пул потоков / корутин и выполняем параллельную проверку IP-адресов на рабочие порты
+# Scan IPs and ports using multiple threads
 with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
-    # Перебираем все IP-адреса в списке и отправляем задачу на проверку портов в пул потоков / корутин
     for ip in ips_to_scan:
-        executor.submit(scan, ip, ports_list)
+        for port in ports_list:
+            executor.submit(scan, ip, port)
 
-print('Сканирование завершено. Активные IP и их порты записаны в workingips.txt')
+print('Scanning completed. Active IPs and their ports are recorded in workingips.txt')
