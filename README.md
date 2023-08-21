@@ -13,7 +13,7 @@ In ipranges.txt, set the ranges for scanning, each range on a new line
 
 1. Enter ports to scan separated by commas (for example 80,443,21,22)
 
-2. Enter the number of threads (The more the better, but the higher the load)
+2. Enter the number of threads (The more the better, but the higher the load on the network and resources)
 
 Active ips and ports will be written to workingips.txt
 ______________________________________________________________________________________
