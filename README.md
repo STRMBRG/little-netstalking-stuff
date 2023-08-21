@@ -2,33 +2,33 @@ ________________________________________________________________________________
 
 launcher.py
 
-Простой и чуть более быстрый способ запустить программы
+An easy and slightly faster way to launch programs
 ______________________________________________________________________________________
 
 DeepScan.py
 
-Простой сканер ip диапазонов написанный OpenAI и немного мной
+A simple IP range scanner written by OpenAI and a little bit by me
 
-В ipranges.txt записать диапазоны для сканирования, каждый диапазон на новую строчку
+In ipranges.txt, set the ranges for scanning, each range on a new line
 
-1)Вводите порты для сканирования через запятую (например 80,443,21,22)
+1) Enter ports to scan separated by commas (for example 80,443,21,22)
 
-2)Вводите количество потоков (Чем больше тем лучше, но при этом выше нагрузка)
+2) Enter the number of threads (The more the better, but the higher the load)
 
-В workingips.txt будут записываться активные ip и порты
+Active ips and ports will be written to workingips.txt
 ______________________________________________________________________________________
 
 PortScan.py
 
-Из названия понятно то что это порт сканер
+From the name it is clear that this is a port scanner
 
-1)Вводите IP-адрес для сканирования портов
+1)Enter IP address for port scan
 
-2)Вводите начальный порт для сканирования
+2)Enter the start port for scanning
 
-3)Вводите конечный порт для сканирования
+3)Enter the destination port for scanning
 
-4)Вводите задержку (в секундах) между проверками портов
+4)Enter the delay (in seconds) between port checks
 
 ______________________________________________________________________________________
 
