@@ -1,36 +1,36 @@
 import os
 import time
 
-# Создаем список доступных программ
+# Creating a list of available programs
 programs = {
     "1": "DeepScan.py",
     "2": "PortScan.py"
 }
 
-# Выводим сообщение перед началом работы скрипта
+# Displaying a message before the script starts
 print('Launcher by STRMBRG & OpenAI')
-time.sleep(1)
+time.sleep(0.8)
 
-# Выводим список программ на экран
-print("Доступные программы:")
+# Displaying a list of programs
+print("Available programs:")
 
 for key, value in programs.items():
     print(f"{key}. {value}")
 
-# Получаем от пользователя номер выбранной программы
-program_number = input("Введите номер программы: ")
+# Get the number of the selected program from the user
+program_number = input("Enter program number: ")
 
-# Запускаем выбранную пользователем программу, если она есть в списке доступных
+# Launch the program selected by the user, if it is in the list of available
 if program_number in programs:
     program_name = programs[program_number]
     
-    # Проверяем существование файла с указанным именем и запускаем его при наличии
+    # Check the existence of a file with the specified name and run it if it exists
     if os.path.isfile(f"PyProgs/{program_name}"):
         os.system(f"python PyProgs/{program_name}")
         
-        print(f"Программа {program_name} завершена")
+        print(f"Program {program_name} completed")
     
     else:
-        print(f"Ошибка: программа {program_name} не найдена!")
+        print(f"Error: program {program_name} not found!")
 else:
-    print("Ошибка: неверный номер программы!")
+    print("Error: Wrong program number!")
